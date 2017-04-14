@@ -1,6 +1,0 @@
-.pydevproject
-__pycache__
-*.pyc
-/dist
-/build
-/pylrc.egg-info
