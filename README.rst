@@ -22,7 +22,12 @@ Usage
     
     lrc_string = subs.toLRC() # convert to lrc string
     
+Installation
+============
 
+.. code::
+
+    sudo pip install pylrc
     
     
     

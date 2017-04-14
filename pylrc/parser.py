@@ -3,6 +3,7 @@ from .utilities import validateTimecode, unpackTimecode
 
 def parse(lrc):
     
+    lines = lrc.split('\n')
     lyrics = Lyrics()
     items = []
     
