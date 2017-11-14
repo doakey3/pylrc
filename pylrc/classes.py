@@ -95,7 +95,8 @@ class Lyrics(list):
                 end_hours = "%02d" % self[i + 1].hours
                 end_min = "%02d" % self[i + 1].minutes
                 end_sec = "%02d" % self[i + 1].seconds
-                end_milli = "%03d" % (self[i + 1].milliseconds - 1)
+                milliseconds = self[i + 1].milliseconds - 1
+                end_milli = "%03d" % (0 if milliseconds < 0 else milliseconds)
                 end_timecode = ''.join([end_hours, ':', end_min, 
                                         ':', end_sec, ',', end_milli])
             
