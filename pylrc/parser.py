@@ -45,7 +45,10 @@ def parse(lrc):
     lyrics.extend(sorted(items))
     
     if not lyrics.offset == "":
-        offset_mins, offset_secs, offset_millis = unpackTimecode(lyrics.offset)
+        if lyrics.offset.isdigit() or (lyrics.offset.startswith('-') and lyrics.offset[1:].isdigit()):
+            offset_mins, offset_secs, offset_millis = 0, 0, int(lyrics.offset)
+        else:
+            offset_mins, offset_secs, offset_millis = unpackTimecode(lyrics.offset)
         for i in range(len(lyrics)):
             lyrics[i].shift(minutes=offset_mins, seconds=offset_secs, 
                 milliseconds=offset_millis)
