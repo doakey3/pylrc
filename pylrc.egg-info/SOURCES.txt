@@ -1,0 +1,10 @@
+README.rst
+setup.py
+pylrc/__init__.py
+pylrc/classes.py
+pylrc/parser.py
+pylrc/utilities.py
+pylrc.egg-info/PKG-INFO
+pylrc.egg-info/SOURCES.txt
+pylrc.egg-info/dependency_links.txt
+pylrc.egg-info/top_level.txt

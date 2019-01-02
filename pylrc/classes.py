@@ -2,21 +2,21 @@ from .utilities import unpackTimecode, findEvenSplit
 
 class LyricLine():
     """An object that holds a lyric line and it's time"""
-    
+
     def __init__(self, timecode, text=""):
         self.hours = 0
         self.minutes, self.seconds, self.milliseconds = unpackTimecode(timecode)
         self.time = sum([(self.hours * 3600), (self.minutes * 60),
                           self.seconds, (self.milliseconds / 1000)])
         self.text = text
-        
+
     def shift(self, minutes=0, seconds=0, milliseconds=0):
         """Shift the timecode by the given amounts"""
-        
+
         self.addMillis(milliseconds)
         self.addSeconds(seconds)
         self.addMinutes(minutes)
-            
+
     def addMillis(self, milliseconds):
         summation = self.milliseconds + milliseconds
         if summation > 999 or summation < 0:
@@ -24,7 +24,7 @@ class LyricLine():
             self.addSeconds(int((self.milliseconds + milliseconds) / 1000))
         else:
             self.milliseconds = summation
-    
+
     def addSeconds(self, seconds):
         summation = self.seconds + seconds
         if summation > 59 or summation < 0:
@@ -32,7 +32,7 @@ class LyricLine():
             self.addMinutes(int((self.seconds + seconds) / 60))
         else:
             self.seconds = summation
-    
+
     def addMinutes(self, minutes):
         summation = self.minutes + minutes
         if summation > 59 or summation < 0:
@@ -40,7 +40,7 @@ class LyricLine():
             self.addHours(int((self.minutes + minutes) / 60))
         else:
             self.minutes = self.minutes + minutes
-    
+
     def addHours(self, hours):
         summation = self._hours + hours
         if summation > 23:
@@ -60,27 +60,27 @@ class LyricLine():
 class Lyrics(list):
     """A list that holds the contents of the lrc file"""
     def __init__(self, items=[]):
-        
+
         self.artist = ""
         self.album = ""
         self.title = ""
         self.author = ""
         self.length = ""
         self.offset = ""
-        
+
         self.extend(items)
-    
+
     def toSRT(self):
         """Returns an SRT string of the LRC data"""
-        
+
         if not self[-1].text.rstrip() == "":
-            timecode = ''.join(['[', str(self[-1].minutes), ':', 
-                                str(self[-1].seconds), '.', 
+            timecode = ''.join(['[', str(self[-1].minutes), ':',
+                                str(self[-1].seconds), '.',
                                 str(self[-1].milliseconds), ']'])
             end_line = LyricLine(timecode, "")
             end_line.shift(seconds=5)
             self.append(end_line)
-        
+
         output = []
         srt = ""
         for i in range(len(self) - 1):
@@ -90,16 +90,16 @@ class Lyrics(list):
                 start_min = "%02d" % self[i].minutes
                 start_sec = "%02d" % self[i].seconds
                 start_milli = "%03d" % self[i].milliseconds
-                start_timecode = ''.join([start_hours, ':', start_min, 
+                start_timecode = ''.join([start_hours, ':', start_min,
                                           ':', start_sec, ',', start_milli])
                 end_hours = "%02d" % self[i + 1].hours
                 end_min = "%02d" % self[i + 1].minutes
                 end_sec = "%02d" % self[i + 1].seconds
                 milliseconds = self[i + 1].milliseconds - 1
                 end_milli = "%03d" % (0 if milliseconds < 0 else milliseconds)
-                end_timecode = ''.join([end_hours, ':', end_min, 
+                end_timecode = ''.join([end_hours, ':', end_min,
                                         ':', end_sec, ',', end_milli])
-            
+
                 srt = srt + start_timecode + ' --> ' + end_timecode + '\n'
                 if len(self[i].text) > 31:
                     srt = srt + findEvenSplit(self[i].text) + '\n'
@@ -108,7 +108,7 @@ class Lyrics(list):
                 output.append(srt)
 
         return '\n'.join(output).rstrip()
-    
+
     def toLRC(self):
         output = []
         if not self.artist == "":
@@ -123,19 +123,17 @@ class Lyrics(list):
             output.append('[length:' + self.length + ']')
         if not self.offset == "":
             output.append('[offset:' + self.offset + ']')
-        
+
         if len(output) > 0:
             output.append('')
-        
+
         lrc = ""
         for i in range(len(self)):
             minutes = "%02d" % self[i].minutes
             seconds = "%02d" % self[i].seconds
             milliseconds = ("%02d" % self[i].milliseconds)[0:2]
-            
+
             lrc = ''.join(['[', minutes, ':', seconds, '.', milliseconds, ']'])
             lrc += self[i].text
             output.append(lrc)
         return '\n'.join(output).rstrip()
-        
-            
