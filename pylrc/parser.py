@@ -1,8 +1,8 @@
 from .classes import Lyrics, LyricLine
-from .utilities import validateTimecode, unpackTimecode
+from .utilities import validateTimecode
+
 
 def parse(lrc):
-
     lines = lrc.split('\n')
     lyrics = Lyrics()
     items = []
@@ -24,7 +24,7 @@ def parse(lrc):
             lyrics.length = lines[i].rstrip()[8:-1].lstrip()
 
         elif lines[i].startswith('[offset:'):
-            lyrics.offset = lines[i].rstrip()[8:-1].lstrip()
+            lyrics.offset = int(lines[i].rstrip()[8:-1].lstrip())
 
         elif lines[i].startswith('[re:'):
             lyrics.editor = lines[i].rstrip()[4:-1].lstrip()
@@ -44,8 +44,8 @@ def parse(lrc):
 
     lyrics.extend(sorted(items))
 
-    if not lyrics.offset == "":
-        millis = int(lyrics.offset)
+    if not lyrics.offset == 0:
+        millis = lyrics.offset
 
         mins = int(millis / 60000)
         millis %= millis / 60000
