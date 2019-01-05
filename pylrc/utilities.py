@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 def validateTimecode(timecode):
     """Checks if a string is a timecode of format [%M:%S.%f]"""
 
@@ -10,6 +11,7 @@ def validateTimecode(timecode):
     except ValueError:
         return False
 
+
 def unpackTimecode(timecode):
     """unpacks a timecode to minutes, seconds, and milliseconds"""
 
@@ -18,7 +20,6 @@ def unpackTimecode(timecode):
     seconds = x.second
     milliseconds = int(x.microsecond / 1000)
     return minutes, seconds, milliseconds
-
 
 
 def findEvenSplit(line):
@@ -34,7 +35,7 @@ def findEvenSplit(line):
     index = differences.index(min(differences))
     for i in range(len(word_list)):
         if i == index:
-            group1 = ' '.join(word_list[0:i+1])
-            group2 = ' '.join(word_list[i+1::])
+            group1 = ' '.join(word_list[0:i + 1])
+            group2 = ' '.join(word_list[i + 1::])
 
     return ''.join([group1, '\n', group2]).rstrip()

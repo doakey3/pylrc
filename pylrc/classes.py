@@ -1,13 +1,14 @@
 from .utilities import unpackTimecode, findEvenSplit
 
-class LyricLine():
+
+class LyricLine:
     """An object that holds a lyric line and it's time"""
 
     def __init__(self, timecode, text=""):
         self.hours = 0
         self.minutes, self.seconds, self.milliseconds = unpackTimecode(timecode)
         self.time = sum([(self.hours * 3600), (self.minutes * 60),
-                          self.seconds, (self.milliseconds / 1000)])
+                         self.seconds, (self.milliseconds / 1000)])
         self.text = text
 
     def shift(self, minutes=0, seconds=0, milliseconds=0):
@@ -57,16 +58,19 @@ class LyricLine():
         """For sorting instances of this class"""
         return self.time < other.time
 
+
 class Lyrics(list):
     """A list that holds the contents of the lrc file"""
+
     def __init__(self, items=[]):
 
+        super().__init__()
         self.artist = ""
         self.album = ""
         self.title = ""
         self.author = ""
         self.length = ""
-        self.offset = ""
+        self.offset = 0
 
         self.extend(items)
 
@@ -82,7 +86,6 @@ class Lyrics(list):
             self.append(end_line)
 
         output = []
-        srt = ""
         for i in range(len(self) - 1):
             if not self[i].text == '':
                 srt = str(i) + '\n'
@@ -121,13 +124,12 @@ class Lyrics(list):
             output.append('[au:' + self.author + ']')
         if not self.length == "":
             output.append('[length:' + self.length + ']')
-        if not self.offset == "":
-            output.append('[offset:' + self.offset + ']')
+        if not self.offset == 0:
+            output.append('[offset:' + str(self.offset) + ']')
 
         if len(output) > 0:
             output.append('')
 
-        lrc = ""
         for i in range(len(self)):
             minutes = "%02d" % self[i].minutes
             seconds = "%02d" % self[i].seconds
