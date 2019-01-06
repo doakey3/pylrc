@@ -24,7 +24,10 @@ def parse(lrc):
             lyrics.length = i.rstrip()[8:-1].lstrip()
 
         elif i.startswith('[offset:'):
-            lyrics.offset = int(i.rstrip()[8:-1].lstrip())
+            try:
+                lyrics.offset = int(i.rstrip()[8:-1].lstrip())
+            except ValueError:
+                pass
 
         elif i.startswith('[re:'):
             lyrics.editor = i.rstrip()[4:-1].lstrip()
