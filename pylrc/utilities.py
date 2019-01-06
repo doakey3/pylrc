@@ -5,7 +5,7 @@ def validateTimecode(timecode):
     """Checks if a string is a timecode of format [%M:%S.%f]"""
 
     try:
-        x = datetime.strptime(timecode, '[%M:%S.%f]')
+        datetime.strptime(timecode, '[%M:%S.%f]')
         return True
 
     except ValueError:

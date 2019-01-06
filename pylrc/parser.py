@@ -7,40 +7,40 @@ def parse(lrc):
     lyrics = Lyrics()
     items = []
 
-    for i in range(len(lines)):
-        if lines[i].startswith('[ar:'):
-            lyrics.artist = lines[i].rstrip()[4:-1].lstrip()
+    for i in lines:
+        if i.startswith('[ar:'):
+            lyrics.artist = i.rstrip()[4:-1].lstrip()
 
-        elif lines[i].startswith('[ti:'):
-            lyrics.title = lines[i].rstrip()[4:-1].lstrip()
+        elif i.startswith('[ti:'):
+            lyrics.title = i.rstrip()[4:-1].lstrip()
 
-        elif lines[i].startswith('[al:'):
-            lyrics.album = lines[i].rstrip()[4:-1].lstrip()
+        elif i.startswith('[al:'):
+            lyrics.album = i.rstrip()[4:-1].lstrip()
 
-        elif lines[i].startswith('[by:'):
-            lyrics.author = lines[i].rstrip()[4:-1].lstrip()
+        elif i.startswith('[by:'):
+            lyrics.author = i.rstrip()[4:-1].lstrip()
 
-        elif lines[i].startswith('[length:'):
-            lyrics.length = lines[i].rstrip()[8:-1].lstrip()
+        elif i.startswith('[length:'):
+            lyrics.length = i.rstrip()[8:-1].lstrip()
 
-        elif lines[i].startswith('[offset:'):
-            lyrics.offset = int(lines[i].rstrip()[8:-1].lstrip())
+        elif i.startswith('[offset:'):
+            lyrics.offset = int(i.rstrip()[8:-1].lstrip())
 
-        elif lines[i].startswith('[re:'):
-            lyrics.editor = lines[i].rstrip()[4:-1].lstrip()
+        elif i.startswith('[re:'):
+            lyrics.editor = i.rstrip()[4:-1].lstrip()
 
-        elif lines[i].startswith('[ve:'):
-            lyrics.version = lines[i].rstrip()[4:-1].lstrip()
+        elif i.startswith('[ve:'):
+            lyrics.version = i.rstrip()[4:-1].lstrip()
 
-        elif len(lines[i].split(']')[0]) >= len('[0:0:0]'):
-            if validateTimecode(lines[i].split(']')[0] + ']'):
-                while validateTimecode(lines[i].split(']')[0] + ']'):
-                    timecode = lines[i].split(']')[0] + ']'
-                    text = ''.join(lines[i].split(']')[-1]).rstrip()
+        elif len(i.split(']')[0]) >= len('[0:0:0]'):
+            if validateTimecode(i.split(']')[0] + ']'):
+                while validateTimecode(i.split(']')[0] + ']'):
+                    timecode = i.split(']')[0] + ']'
+                    text = ''.join(i.split(']')[-1]).rstrip()
                     lyric_line = LyricLine(timecode, text=text)
                     items.append(lyric_line)
 
-                    lines[i] = lines[i][len(timecode)::]
+                    i = i[len(timecode)::]
 
     lyrics.extend(sorted(items))
 
@@ -53,7 +53,7 @@ def parse(lrc):
         secs = int(millis / 1000)
         millis %= millis / 1000
 
-        for i in range(len(lyrics)):
-            lyrics[i].shift(minutes=mins, seconds=secs, milliseconds=millis)
+        for i in lyrics:
+            i.shift(minutes=mins, seconds=secs, milliseconds=millis)
 
     return lyrics
