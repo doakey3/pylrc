@@ -4,13 +4,13 @@ import unittest
 
 import pylrc
 
-file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, os.path.abspath(file_path))
+FILE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.abspath(FILE_PATH))
 
 
 class TestMatches(unittest.TestCase):
     def setUp(self):
-        self.static_path = os.path.join(file_path, 'tests', 'static')
+        self.static_path = os.path.join(FILE_PATH, 'tests', 'static')
 
     def test_lrc_to_srt(self):
         for file in os.listdir(self.static_path):

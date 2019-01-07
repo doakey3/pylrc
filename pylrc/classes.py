@@ -62,9 +62,11 @@ class LyricLine:
 class Lyrics(list):
     """A list that holds the contents of the lrc file"""
 
-    def __init__(self, items=[]):
+    def __init__(self, items=None):
 
         super().__init__()
+        if items is None:
+            items = []
         self.artist = ""
         self.album = ""
         self.title = ""
@@ -114,28 +116,28 @@ class Lyrics(list):
 
     def toLRC(self):
         output = []
-        if not self.artist == "":
+        if self.artist != "":
             output.append('[ar:' + self.artist + ']')
-        if not self.album == "":
+        if self.album != "":
             output.append('[al:' + self.album + ']')
-        if not self.title == "":
+        if self.title != "":
             output.append('[ti:' + self.title + ']')
-        if not self.author == "":
+        if self.author != "":
             output.append('[au:' + self.author + ']')
-        if not self.length == "":
+        if self.length != "":
             output.append('[length:' + self.length + ']')
-        if not self.offset == 0:
+        if self.offset != 0:
             output.append('[offset:' + str(self.offset) + ']')
 
-        if len(output) > 0:
+        if output:
             output.append('')
 
-        for i in range(len(self)):
-            minutes = "%02d" % self[i].minutes
-            seconds = "%02d" % self[i].seconds
-            milliseconds = ("%02d" % self[i].milliseconds)[0:2]
+        for i in self:
+            minutes = "%02d" % i.minutes
+            seconds = "%02d" % i.seconds
+            milliseconds = ("%02d" % i.milliseconds)[0:2]
 
             lrc = ''.join(['[', minutes, ':', seconds, '.', milliseconds, ']'])
-            lrc += self[i].text
+            lrc += i.text
             output.append(lrc)
         return '\n'.join(output).rstrip()
