@@ -1,5 +1,9 @@
+import re
+
 from .classes import Lyrics, LyricLine
 from .utilities import validateTimecode
+
+synced_line_regex = re.compile(r'^(\[[0-5]\d:[0-5]\d(\.\d\d)?\])+.*', flags=re.MULTILINE)
 
 
 def parse(lrc):
@@ -7,56 +11,60 @@ def parse(lrc):
     lyrics = Lyrics()
     items = []
 
-    for i in lines:
-        if i.startswith('[ar:'):
-            lyrics.artist = i.rstrip()[4:-1].lstrip()
+    for line in lines:
+        if line.startswith('[ar:'):
+            lyrics.artist = line.rstrip()[4:-1].lstrip()
 
-        elif i.startswith('[ti:'):
-            lyrics.title = i.rstrip()[4:-1].lstrip()
+        elif line.startswith('[ti:'):
+            lyrics.title = line.rstrip()[4:-1].lstrip()
 
-        elif i.startswith('[al:'):
-            lyrics.album = i.rstrip()[4:-1].lstrip()
+        elif line.startswith('[al:'):
+            lyrics.album = line.rstrip()[4:-1].lstrip()
 
-        elif i.startswith('[by:'):
-            lyrics.author = i.rstrip()[4:-1].lstrip()
+        elif line.startswith('[by:'):
+            lyrics.author = line.rstrip()[4:-1].lstrip()
 
-        elif i.startswith('[length:'):
-            lyrics.length = i.rstrip()[8:-1].lstrip()
+        elif line.startswith('[length:'):
+            lyrics.length = line.rstrip()[8:-1].lstrip()
 
-        elif i.startswith('[offset:'):
+        elif line.startswith('[offset:'):
             try:
-                lyrics.offset = int(i.rstrip()[8:-1].lstrip())
+                lyrics.offset = int(line.rstrip()[8:-1].lstrip())
             except ValueError:
                 pass
 
-        elif i.startswith('[re:'):
-            lyrics.editor = i.rstrip()[4:-1].lstrip()
+        elif line.startswith('[re:'):
+            lyrics.editor = line.rstrip()[4:-1].lstrip()
 
-        elif i.startswith('[ve:'):
-            lyrics.version = i.rstrip()[4:-1].lstrip()
+        elif line.startswith('[ve:'):
+            lyrics.version = line.rstrip()[4:-1].lstrip()
 
-        elif len(i.split(']')[0]) >= len('[0:0:0]'):
-            if validateTimecode(i.split(']')[0] + ']'):
-                while validateTimecode(i.split(']')[0] + ']'):
-                    timecode = i.split(']')[0] + ']'
-                    text = ''.join(i.split(']')[-1]).rstrip()
-                    lyric_line = LyricLine(timecode, text=text)
+        elif synced_line_regex.match(line):
+            text = ""
+            first = True
+            for split in reversed(line.split(']')):
+                if validateTimecode(split + "]"):
+                    lyric_line = LyricLine(split + "]", text=text)
                     items.append(lyric_line)
-
-                    i = i[len(timecode)::]
+                else:
+                    if not first:
+                        split += "]"
+                    else:
+                        first = False
+                    text = split + text
 
     lyrics.extend(sorted(items))
 
     if not lyrics.offset == 0:
         millis = lyrics.offset
 
-        mins = int(millis / 60000)
+        minutes = int(millis / 60000)
         millis %= millis / 60000
 
         secs = int(millis / 1000)
         millis %= millis / 1000
 
-        for i in lyrics:
-            i.shift(minutes=mins, seconds=secs, milliseconds=millis)
+        for line in lyrics:
+            line.shift(minutes=minutes, seconds=secs, milliseconds=millis)
 
     return lyrics

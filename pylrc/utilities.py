@@ -5,7 +5,7 @@ def validateTimecode(timecode):
     """Checks if a string is a timecode of format [%M:%S.%f]"""
 
     try:
-        datetime.strptime(timecode, '[%M:%S.%f]')
+        unpackTimecode(timecode)
         return True
 
     except ValueError:
@@ -15,7 +15,10 @@ def validateTimecode(timecode):
 def unpackTimecode(timecode):
     """unpacks a timecode to minutes, seconds, and milliseconds"""
 
-    x = datetime.strptime(timecode, '[%M:%S.%f]')
+    if "." in timecode:
+        x = datetime.strptime(timecode, '[%M:%S.%f]')
+    else:
+        x = datetime.strptime(timecode, '[%M:%S]')
     minutes = x.minute
     seconds = x.second
     milliseconds = int(x.microsecond / 1000)
