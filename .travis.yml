@@ -1,8 +1,9 @@
 language: python
 python:
   - "3.6"
-before_install:
+install:
   - python setup.py install
-  - cd tests
+before_script:
+  - export PYTHONPATH=$PYTHONPATH:$PWD
 script:
-  - python test.py
+  - python tests/test.py
