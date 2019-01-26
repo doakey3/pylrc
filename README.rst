@@ -1,6 +1,9 @@
 =====
 PyLRC
 =====
+.. image:: https://img.shields.io/pypi/v/pylrc.svg
+.. image:: https://img.shields.io/pypi/dm/pylrc.svg
+.. image:: https://img.shields.io/github/license/doakey3/pylrc.svg
 
 A python library for parsing and converting .lrc files
 

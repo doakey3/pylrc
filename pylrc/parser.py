@@ -7,7 +7,7 @@ synced_line_regex = re.compile(r'^(\[[0-5]\d:[0-5]\d(\.\d\d)?\])+.*', flags=re.M
 
 
 def parse(lrc):
-    lines = lrc.split('\n')
+    lines = lrc.splitlines()
     lyrics = Lyrics()
     items = []
 
