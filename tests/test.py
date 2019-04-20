@@ -13,9 +13,10 @@ class TestMatches(unittest.TestCase):
         self.static_path = os.path.join(FILE_PATH, 'tests', 'static')
 
     def test_lrc_to_srt(self):
-        for file in os.listdir(self.static_path):
+        path = os.path.join(self.static_path, 'lrc_to_srt')
+        for file in os.listdir(path):
             if file.endswith('.lrc'):
-                lrc_path = os.path.join(self.static_path, file)
+                lrc_path = os.path.join(path, file)
                 lrc_file = open(lrc_path)
                 lrc_text = lrc_file.read()
                 lrc_file.close()
@@ -27,6 +28,24 @@ class TestMatches(unittest.TestCase):
                 srt_file.close()
 
                 self.assertEqual(sub.toSRT(), srt_text)
+
+    def test_offset(self):
+        song_path = os.path.join(self.static_path, 'P!nk - Bridge of Light.lrc')
+
+        with open(song_path, "r", encoding="UTF-8") as song_file:
+            lrc_text = pylrc.parse(song_file.read())
+
+            self.assertEqual(lrc_text.offset, -15000)
+
+            self.assertEqual(lrc_text[0].hours, 0)
+            self.assertEqual(lrc_text[0].minutes, 0)
+            self.assertEqual(lrc_text[0].seconds, -14)
+            self.assertEqual(lrc_text[0].milliseconds, 730)
+
+            self.assertEqual(lrc_text[4].hours, 0)
+            self.assertEqual(lrc_text[4].minutes, 0)
+            self.assertEqual(lrc_text[4].seconds, 1)
+            self.assertEqual(lrc_text[4].milliseconds, 890)
 
 
 if __name__ == '__main__':
