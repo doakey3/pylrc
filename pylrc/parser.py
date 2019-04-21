@@ -59,10 +59,10 @@ def parse(lrc):
         millis = lyrics.offset
 
         minutes = int(millis / 60000)
-        millis %= millis / 60000
+        millis -= minutes * 60000
 
         secs = int(millis / 1000)
-        millis %= millis / 1000
+        millis -= secs * 1000
 
         for line in lyrics:
             line.shift(minutes=minutes, seconds=secs, milliseconds=millis)

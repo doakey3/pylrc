@@ -20,27 +20,27 @@ class LyricLine:
 
     def addMillis(self, milliseconds):
         summation = self.milliseconds + milliseconds
-        if summation > 999 or summation < 0:
-            self.milliseconds = (self.milliseconds + milliseconds) % 1000
-            self.addSeconds(int((self.milliseconds + milliseconds) / 1000))
+        if summation > 999 or summation < -999:
+            self.milliseconds = summation % 1000
+            self.addSeconds(int(summation / 1000))
         else:
             self.milliseconds = summation
 
     def addSeconds(self, seconds):
         summation = self.seconds + seconds
-        if summation > 59 or summation < 0:
-            self.seconds = (self.seconds + seconds) % 60
-            self.addMinutes(int((self.seconds + seconds) / 60))
+        if summation > 59 or summation < -59:
+            self.seconds = summation % 60
+            self.addMinutes(int(summation / 60))
         else:
             self.seconds = summation
 
     def addMinutes(self, minutes):
         summation = self.minutes + minutes
-        if summation > 59 or summation < 0:
-            self.minutes = (self.minutes + minutes) % 60
-            self.addHours(int((self.minutes + minutes) / 60))
+        if summation > 59 or summation < -59:
+            self.minutes = summation % 60
+            self.addHours(int(summation / 60))
         else:
-            self.minutes = self.minutes + minutes
+            self.minutes = summation
 
     def addHours(self, hours):
         summation = self._hours + hours
