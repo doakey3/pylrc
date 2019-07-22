@@ -47,6 +47,16 @@ class TestMatches(unittest.TestCase):
             self.assertEqual(lrc_text[4].seconds, 1)
             self.assertEqual(lrc_text[4].milliseconds, 890)
 
+            self.assertEqual(lrc_text[24].hours, 0)
+            self.assertEqual(lrc_text[24].minutes, 1)
+            self.assertEqual(lrc_text[24].seconds, 29)
+            self.assertEqual(lrc_text[24].milliseconds, 0)
+
+            self.assertEqual(lrc_text[32].hours, 0)
+            self.assertEqual(lrc_text[32].minutes, 2)
+            self.assertEqual(lrc_text[32].seconds, -4)
+            self.assertEqual(lrc_text[32].milliseconds, 400)
+
 
 if __name__ == '__main__':
     unittest.main()
