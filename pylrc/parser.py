@@ -3,7 +3,7 @@ import re
 from .classes import Lyrics, LyricLine
 from .utilities import validateTimecode
 
-synced_line_regex = re.compile(r'^(\[[0-5]\d:[0-5]\d(\.\d\d)?\])+.*', flags=re.MULTILINE)
+synced_line_regex = re.compile(r'^(\[[0-5]\d:[0-5]\d(\.\d+)?\])+.*', flags=re.MULTILINE)
 
 
 def parse(lrc):
@@ -12,7 +12,10 @@ def parse(lrc):
     items = []
 
     for line in lines:
-        if line.startswith('[ar:'):
+        if not line:
+            continue
+
+        elif line.startswith('[ar:'):
             lyrics.artist = line.rstrip()[4:-1].lstrip()
 
         elif line.startswith('[ti:'):
