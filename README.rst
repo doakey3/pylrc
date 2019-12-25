@@ -19,7 +19,8 @@ Usage
     lrc_file.close()
     
     subs = pylrc.parse(lrc_string)
-    subs.shift(minutes=1, seconds=13, milliseconds=325) # offset by 01:13.325
+    for sub in subs:
+        sub.shift(minutes=1, seconds=13, milliseconds=325) # offset by 01:13.325
     
     srt = subs.toSRT() # convert lrc to srt string
     
