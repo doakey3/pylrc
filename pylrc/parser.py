@@ -24,8 +24,11 @@ def parse(lrc):
         elif line.startswith('[al:'):
             lyrics.album = line.rstrip()[4:-1].lstrip()
 
-        elif line.startswith('[by:'):
+        elif line.startswith('[au:'):
             lyrics.author = line.rstrip()[4:-1].lstrip()
+
+        elif line.startswith('[by:'):
+            lyrics.lrc_creator = line.rstrip()[4:-1].lstrip()
 
         elif line.startswith('[length:'):
             lyrics.length = line.rstrip()[8:-1].lstrip()
