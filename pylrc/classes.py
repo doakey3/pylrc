@@ -77,6 +77,8 @@ class LyricLine:
         elif self.milliseconds < 0 < self.seconds:
             self.seconds -= 1
             self.milliseconds += 1000
+        self.time = sum([(self.hours * 3600), (self.minutes * 60),
+                         self.seconds, (self.milliseconds / 1000)])
 
     def __lt__(self, other):
         """For sorting instances of this class"""
