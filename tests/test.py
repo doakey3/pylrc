@@ -35,8 +35,6 @@ class TestMatches(unittest.TestCase):
         with open(song_path, "r", encoding="UTF-8") as song_file:
             lrc_text = pylrc.parse(song_file.read())
 
-            self.assertEqual(lrc_text.offset, -15000)
-
             self.assertEqual(lrc_text[0].hours, 0)
             self.assertEqual(lrc_text[0].minutes, 0)
             self.assertEqual(lrc_text[0].seconds, -13)
