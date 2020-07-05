@@ -71,6 +71,7 @@ class Lyrics(list):
         self.album = ""
         self.title = ""
         self.author = ""
+        self.lrc_creator = ""
         self.length = ""
         self.offset = 0
 
@@ -124,6 +125,8 @@ class Lyrics(list):
             output.append('[ti:' + self.title + ']')
         if self.author != "":
             output.append('[au:' + self.author + ']')
+        if self.lrc_creator != "":
+            output.append('[by:' + self.lrc_creator + ']')
         if self.length != "":
             output.append('[length:' + self.length + ']')
         if self.offset != 0:
