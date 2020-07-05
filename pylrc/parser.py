@@ -72,5 +72,6 @@ def parse(lrc):
 
         for line in lyrics:
             line.shift(minutes=minutes, seconds=secs, milliseconds=millis)
+        lyrics.offset = 0
 
     return lyrics

@@ -14,36 +14,39 @@ class LyricLine:
     def shift(self, minutes=0, seconds=0, milliseconds=0):
         """Shift the timecode by the given amounts"""
 
-        self.addMillis(milliseconds)
-        self.addSeconds(seconds)
         self.addMinutes(minutes)
+        self.addSeconds(seconds)
+        self.addMillis(milliseconds)
 
     def addMillis(self, milliseconds):
         summation = self.milliseconds + milliseconds
-        if summation > 999 or summation < -999:
-            self.milliseconds = summation % 1000
+        if summation >= 1000 or summation <= -1000:
+            self.milliseconds = summation % (1000 if (summation > 0) else -1000)
             self.addSeconds(int(summation / 1000))
         else:
             self.milliseconds = summation
+        self._check()
 
     def addSeconds(self, seconds):
         summation = self.seconds + seconds
-        if summation > 59 or summation < -59:
-            self.seconds = summation % 60
+        if summation >= 60 or summation <= -60:
+            self.seconds = summation % (60 if (summation > 0) else -60)
             self.addMinutes(int(summation / 60))
         else:
             self.seconds = summation
+        self._check()
 
     def addMinutes(self, minutes):
         summation = self.minutes + minutes
-        if summation > 59 or summation < -59:
-            self.minutes = summation % 60
+        if summation >= 60 or summation <= -60:
+            self.minutes = summation % (60 if (summation > 0) else -60)
             self.addHours(int(summation / 60))
         else:
             self.minutes = summation
+        self._check()
 
     def addHours(self, hours):
-        summation = self._hours + hours
+        summation = self.hours + hours
         if summation > 23:
             self.hours = 23
         elif summation < 0:
@@ -52,7 +55,30 @@ class LyricLine:
             self.seconds = 0
             self.milliseconds = 0
         else:
-            self._hours = summation
+            self.hours = summation
+        self._check()
+
+    def _check(self):
+        if self.hours < 0 < self.minutes:
+            self.hours += 1
+            self.minutes -= 60
+        elif self.minutes < 0 < self.hours:
+            self.hours -= 1
+            self.minutes += 60
+        if self.minutes < 0 < self.seconds:
+            self.minutes += 1
+            self.seconds -= 60
+        elif self.seconds < 0 < self.minutes:
+            self.minutes -= 1
+            self.seconds += 60
+        if self.seconds < 0 < self.milliseconds:
+            self.seconds += 1
+            self.milliseconds -= 1000
+        elif self.milliseconds < 0 < self.seconds:
+            self.seconds -= 1
+            self.milliseconds += 1000
+        self.time = sum([(self.hours * 3600), (self.minutes * 60),
+                         self.seconds, (self.milliseconds / 1000)])
 
     def __lt__(self, other):
         """For sorting instances of this class"""
