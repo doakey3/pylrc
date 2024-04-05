@@ -4,7 +4,7 @@ from .utilities import unpackTimecode, findEvenSplit
 class LyricLine:
     """An object that holds a lyric line and it's time"""
 
-    def __init__(self, timecode, text=""):
+    def __init__(self, timecode, text:str = ""):
         self.hours = 0
         self.minutes, self.seconds, self.milliseconds = unpackTimecode(timecode)
         self.time = sum([(self.hours * 3600), (self.minutes * 60),
@@ -17,6 +17,10 @@ class LyricLine:
         self.addMinutes(minutes)
         self.addSeconds(seconds)
         self.addMillis(milliseconds)
+
+    def replace(self, new_text:str = ""):
+        """Replaces the text of the lyricline"""
+        self.text = new_text
 
     def addMillis(self, milliseconds):
         summation = self.milliseconds + milliseconds
