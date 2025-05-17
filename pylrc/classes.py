@@ -164,7 +164,7 @@ class Lyrics(list):
         for i in self:
             minutes = "%02d" % i.minutes
             seconds = "%02d" % i.seconds
-            milliseconds = ("%02d" % i.milliseconds)[0:2]
+            milliseconds = ("%03d" % i.milliseconds)[0:2]
 
             lrc = ''.join(['[', minutes, ':', seconds, '.', milliseconds, ']'])
             lrc += i.text
