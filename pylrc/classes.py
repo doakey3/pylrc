@@ -100,6 +100,7 @@ class Lyrics(list):
         self.lrc_creator = ""
         self.length = ""
         self.offset = 0
+        self.millisecond_digits = 2
 
         self.extend(items)
 
@@ -164,7 +165,7 @@ class Lyrics(list):
         for i in self:
             minutes = "%02d" % i.minutes
             seconds = "%02d" % i.seconds
-            milliseconds = ("%02d" % i.milliseconds)[0:2]
+            milliseconds = ("%03d" % i.milliseconds)[0:self.millisecond_digits]
 
             lrc = ''.join(['[', minutes, ':', seconds, '.', milliseconds, ']'])
             lrc += i.text

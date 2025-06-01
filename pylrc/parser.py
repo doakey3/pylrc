@@ -52,6 +52,9 @@ def parse(lrc):
                 if validateTimecode(split + "]"):
                     lyric_line = LyricLine(split + "]", text=text)
                     items.append(lyric_line)
+                    # read length of millisecond string
+                    if '.' in split:
+                        lyrics.millisecond_digits = max(lyrics.millisecond_digits, len(split.split('.')[-1]))
                 else:
                     if not first:
                         split += "]"
