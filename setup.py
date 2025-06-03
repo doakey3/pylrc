@@ -11,4 +11,5 @@ setup(
     url='https://github.com/doakey3/pylrc',
     download_url='https://github.com/doakey3/pylrc/releases/download/0.1.0/pylrc.tar.gz',
     license='MIT',
+    package_dir={'': 'src'},
 )
