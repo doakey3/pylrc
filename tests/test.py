@@ -29,6 +29,12 @@ class TestMatches(unittest.TestCase):
 
                 self.assertEqual(sub.toSRT(), srt_text)
 
+    def test_metadata_only_to_srt(self):
+        # An LRC with no timed lyric lines (only metadata tags, or empty)
+        # used to raise IndexError in toSRT; it should just be empty.
+        for text in ('[ti:Title]\n[ar:Artist]\n', '', 'not an lrc file\n'):
+            self.assertEqual(pylrc.parse(text).toSRT(), '')
+
     def test_offset(self):
         song_path = os.path.join(self.static_path, 'P!nk - Bridge of Light.lrc')
 
