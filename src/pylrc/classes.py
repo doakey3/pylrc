@@ -107,6 +107,11 @@ class Lyrics(list):
     def toSRT(self):
         """Returns an SRT string of the LRC data"""
 
+        if not self:
+            # No timed lyric lines (for example an LRC with only metadata
+            # tags); there is nothing to convert.
+            return ""
+
         if not self[-1].text.rstrip() == "":
             timecode = ''.join(['[', str(self[-1].minutes), ':',
                                 str(self[-1].seconds), '.',
